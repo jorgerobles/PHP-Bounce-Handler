@@ -99,7 +99,7 @@ class BounceHandler{
         // fluff up the email
         $bounce = $this->init_bouncehandler($eml);
         if (strpos($bounce, "\r\n\r\n") !== FALSE) 
-            list($head, $body) = preg_split("/\r\n\r\n/", $bounce, 2);
+            list($head, $body) = preg_explode("/\r\n\r\n/", $bounce, 2);
         else
             list($head, $body) = array($bounce, '');
         $this->head_hash = $this->parse_head($head);
@@ -226,7 +226,7 @@ class BounceHandler{
             //  Busted Exim MTA
             //  Up to 50 email addresses can be listed on each header.
             //  There can be multiple X-Failed-Recipients: headers. - (not supported)
-            $arrFailed = split(',', $this->head_hash['X-failed-recipients']);
+            $arrFailed = explode(',', $this->head_hash['X-failed-recipients']);
             for($j=0; $j<count($arrFailed); $j++){
                 $this->output[$j]['recipient'] = trim($arrFailed[$j]);
                 $this->output[$j]['status'] = $this->get_status_code_from_text($this->output[$j]['recipient'],0);
@@ -576,7 +576,7 @@ class BounceHandler{
     }
 
     function extract_address($str){
-        $from_stuff = preg_split('/[ \"\'\<\>:\(\)\[\]]/', $str);
+        $from_stuff = preg_explode('/[ \"\'\<\>:\(\)\[\]]/', $str);
         foreach ($from_stuff as $things){
             if (strpos($things, '@')!==FALSE){$from = $things;}
         }
