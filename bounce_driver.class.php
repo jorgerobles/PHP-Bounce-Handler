@@ -99,7 +99,7 @@ class BounceHandler{
         // fluff up the email
         $bounce = $this->init_bouncehandler($eml);
         if (strpos($bounce, "\r\n\r\n") !== FALSE) 
-            list($head, $body) = preg_split("/\r\n\r\n/", $bounce, 2);
+            list($head, $body) = preg_explode("/\r\n\r\n/", $bounce, 2);
         else
             list($head, $body) = array($bounce, '');
         $this->head_hash = $this->parse_head($head);
@@ -576,7 +576,7 @@ class BounceHandler{
     }
 
     function extract_address($str){
-        $from_stuff = preg_split('/[ \"\'\<\>:\(\)\[\]]/', $str);
+        $from_stuff = preg_explode('/[ \"\'\<\>:\(\)\[\]]/', $str);
         foreach ($from_stuff as $things){
             if (strpos($things, '@')!==FALSE){$from = $things;}
         }
